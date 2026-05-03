@@ -156,14 +156,64 @@ const Word = memo(function Word({
   // Cache the split characters array (js-combine-iterations)
   // Only recalculate when word changes
   const characters = useMemo(() => word.split(''), [word])
+  const wordHasError = errorsInWord
+    ? Object.values(errorsInWord).some(Boolean)
+    : false
+
+  if (isRtl) {
+    const typedText = isCurrent ? word.slice(0, activeCharIndex) : ''
+    const remainingText = isCurrent ? word.slice(activeCharIndex) : word
+
+    return (
+      <motion.div
+        data-word="true"
+        data-current={isCurrent}
+        data-typed={isTyped}
+        dir="rtl"
+        className={cn('inline-block whitespace-pre px-[0.03em]', {
+          'text-error [text-shadow:0_0_0.3em_color-mix(in_srgb,var(--error)_50%,transparent)]':
+            wordHasError,
+          'text-tertiary': isTyped && !wordHasError,
+          'text-secondary': isUpcoming && !wordHasError
+        })}
+        initial={{ opacity: 0, filter: 'blur(8px)', y: isInitialLoad ? 24 : 12 }}
+        animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+        transition={{
+          duration: isInitialLoad ? 0.5 : 0.4,
+          ease: [0.25, 0.1, 0.25, 1],
+          delay: isInitialLoad ? 0.5 + index * 0.015 : index * 0.006
+        }}
+      >
+        {isCurrent ? (
+          <>
+            <span className={cn(!wordHasError && 'text-tertiary')}>{typedText}</span>
+            <motion.span
+              layoutId="typing-cursor"
+              className={cn(
+                'inline-block h-[0.9em] w-1 translate-y-[0.12em] rounded-full animate-blink',
+                wordHasError ? 'bg-error' : 'bg-primary'
+              )}
+              transition={{
+                type: 'tween',
+                duration: 0.1,
+                ease: 'circOut'
+              }}
+            />
+            <span className={cn(!wordHasError && 'text-primary')}>{remainingText}</span>
+          </>
+        ) : (
+          word
+        )}
+      </motion.div>
+    )
+  }
 
   return (
     <motion.div
       data-word="true"
       data-current={isCurrent}
       data-typed={isTyped}
-      dir={isRtl ? 'rtl' : 'ltr'}
-      className={cn('inline-flex', isRtl && 'flex-row-reverse')}
+      className="inline-flex"
       initial={{ opacity: 0, filter: 'blur(8px)', y: isInitialLoad ? 24 : 12 }}
       animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
       transition={{
