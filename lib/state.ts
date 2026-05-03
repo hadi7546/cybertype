@@ -6,9 +6,10 @@ import {
   booleanValidator,
   soundPackValidator
 } from './localStorage'
-import { SoundPack } from './sounds'
-import { State, Action, QuoteData } from './types'
+import type { SoundPack } from './sounds'
+import type { State, Action, QuoteData } from './types'
 import { getRandomWords, createEmptyKeyStatRecord } from './utils'
+import { isQuoteDataName } from './data'
 
 const initWords = 500
 
@@ -173,7 +174,7 @@ function getRandomQuotes(data: QuoteData[], charCount: number) {
   const wordCount = charCount / 5
 
   while (words.length < wordCount) {
-    const i = Math.round(Math.random() * data.length)
+    const i = Math.floor(Math.random() * data.length)
     const newWords = data[i].text.split(' ').map(w => w + ' ')
     words.push(...newWords)
   }
@@ -182,13 +183,13 @@ function getRandomQuotes(data: QuoteData[], charCount: number) {
 
 function appendWords(state: State, count = 200) {
   const words = state.words
-  if (state.dataName === 'Quotes') {
+  if (isQuoteDataName(state.dataName)) {
     state.words = [
       ...words,
       ...getRandomQuotes(state.data as unknown as QuoteData[], count)
     ]
   } else {
-    state.words = [...words, ...getRandomWords(state.data, count)]
+    state.words = [...words, ...getRandomWords(state.data as string[], count)]
   }
 }
 

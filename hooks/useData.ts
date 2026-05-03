@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { allData } from '../lib/data'
 import { getCustomText } from '../lib/customTexts'
-import { Action, State } from '../lib/types'
+import type { Action, State } from '../lib/types'
 
 const DEFAULT_DATA_NAME = 'English 200'
 
@@ -13,7 +13,7 @@ export function useData(dataName: State['dataName'], dispatch: React.Dispatch<Ac
       dispatch({
         type: 'setData',
         dataName: dataName,
-        data: builtInData as string[]
+        data: builtInData
       })
       return
     }

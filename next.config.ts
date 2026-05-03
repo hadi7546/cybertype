@@ -9,6 +9,7 @@ const withPWA = require('next-pwa')({
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  output: 'standalone',
   turbopack: {}
 }
 

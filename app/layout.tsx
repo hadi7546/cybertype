@@ -55,6 +55,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 src: url(/InputMono-Light.woff2) format('woff2');
               }
 
+              @font-face {
+                font-family: 'Gandom';
+                font-style: normal;
+                font-weight: 400;
+                font-display: swap;
+                src: url(/Gandom.woff) format('woff');
+              }
+
               body {
                 font-family: 'InputMono', monospace;
               }

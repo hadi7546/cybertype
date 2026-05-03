@@ -1,7 +1,7 @@
 import { Dispatch, useState } from 'react'
-import { Action } from '../lib/types'
+import type { Action } from '../lib/types'
 import { saveCustomText, customTextExists, getAllCustomTexts } from '../lib/customTexts'
-import { dataNames } from './DataSelector'
+import { dataNames } from '../lib/data'
 
 type Props = {
   dispatch: Dispatch<Action>

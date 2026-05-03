@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { dataNames } from '../components/DataSelector'
+import { dataNames } from './data'
 import { soundPacks } from './sounds'
-import { State } from './types'
+import type { State } from './types'
 
 export function getLocalStorage(
   key: string,

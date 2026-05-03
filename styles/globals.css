@@ -50,6 +50,12 @@
   }
 }
 
+@layer utilities {
+  .font-gandom {
+    font-family: 'Gandom', 'InputMono', sans-serif;
+  }
+}
+
 /* Keyframes */
 @keyframes blink {
   0%,

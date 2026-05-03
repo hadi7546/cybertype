@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useRef, useMemo } from 'react'
 import { cn } from '../lib/utils'
-import { ErrorLocations, Progress } from '../lib/types'
+import type { ErrorLocations, Progress } from '../lib/types'
 import { SpaceIcon } from './icons'
 import { motion, LayoutGroup, AnimatePresence } from 'motion/react'
 
@@ -16,6 +16,7 @@ type WordsProps = {
   progress: Progress
   errorLocations: ErrorLocations
   shuffleKey: number
+  isRtl?: boolean
   onTap?: () => void
 }
 
@@ -24,6 +25,7 @@ export function Words({
   progress,
   errorLocations,
   shuffleKey,
+  isRtl = false,
   onTap
 }: WordsProps) {
   const wordsRef = useRef<HTMLDivElement>(null)
@@ -55,7 +57,11 @@ export function Words({
 
   return (
     <div
-      className="flex justify-center relative overflow-hidden h-[500px] leading-[1.3] py-20 z-1 text-2xl md:text-4xl select-none cursor-text md:cursor-auto"
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className={cn(
+        'flex justify-center relative overflow-hidden h-[500px] leading-[1.3] py-20 z-1 text-2xl md:text-4xl select-none cursor-text md:cursor-auto',
+        isRtl && 'font-gandom'
+      )}
       onClick={onTap}
     >
       {/* top shadow */}
@@ -111,6 +117,7 @@ export function Words({
                   activeCharIndex={progress.charIndex}
                   errorsInWord={errorLocations[wordIndex]}
                   shuffleKey={shuffleKey}
+                  isRtl={isRtl}
                 />
               ))}
             </motion.div>
@@ -128,6 +135,7 @@ type WordProps = {
   isUpcoming: boolean
   activeCharIndex: number // -1 if active character Index is not inside the word
   errorsInWord?: ErrorLocations[number]
+  isRtl: boolean
 }
 
 const Word = memo(function Word({
@@ -137,6 +145,7 @@ const Word = memo(function Word({
   isTyped,
   isCurrent,
   isUpcoming,
+  isRtl,
   index,
   shuffleKey
 }: WordProps & { index: number; shuffleKey: number }) {
@@ -153,7 +162,8 @@ const Word = memo(function Word({
       data-word="true"
       data-current={isCurrent}
       data-typed={isTyped}
-      className="inline-flex"
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className={cn('inline-flex', isRtl && 'flex-row-reverse')}
       initial={{ opacity: 0, filter: 'blur(8px)', y: isInitialLoad ? 24 : 12 }}
       animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
       transition={{
@@ -171,6 +181,7 @@ const Word = memo(function Word({
           isTypedChar={isCurrent ? characterIndex < activeCharIndex : isTyped}
           isCurrent={isCurrent}
           isUpcoming={isUpcoming}
+          isRtl={isRtl}
         />
       ))}
     </motion.div>
@@ -185,6 +196,7 @@ type CharacterProps = {
   isTypedChar: boolean
   isCurrent: boolean
   isUpcoming: boolean
+  isRtl: boolean
 }
 
 const Character = memo(function Character({
@@ -193,7 +205,8 @@ const Character = memo(function Character({
   isCurrentChar,
   isTypedChar,
   isCurrent,
-  isUpcoming
+  isUpcoming,
+  isRtl
 }: CharacterProps) {
   return (
     <span
@@ -214,7 +227,8 @@ const Character = memo(function Character({
         <motion.span
           layoutId="typing-cursor"
           className={cn(
-            'absolute left-0 -translate-x-1 top-[0.2em] bottom-[0.2em] w-1 rounded-full animate-blink',
+            'absolute top-[0.2em] bottom-[0.2em] w-1 rounded-full animate-blink',
+            isRtl ? 'right-0 translate-x-1' : 'left-0 -translate-x-1',
             isError ? 'bg-error' : 'bg-primary'
           )}
           transition={{

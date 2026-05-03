@@ -1,20 +1,11 @@
 import { Dispatch, useRef, useEffect, useState } from 'react'
 import { Plus, X } from 'lucide-react'
-import { Action } from '../lib/types'
+import type { Action } from '../lib/types'
 import { cn } from '../lib/utils'
 import { useArrowNavigation } from '../hooks/useArrowNavigation'
 import { getAllCustomTexts, deleteCustomText, CustomText } from '../lib/customTexts'
 import { useMotionSquircle } from '../lib/squircle'
-
-export const dataNames = [
-  'Quotes',
-  'English 200',
-  'English 1K',
-  'English 5K',
-  'English 10K',
-  'Wordle',
-  'Commonly Misspelled'
-]
+import { dataNames } from '../lib/data'
 
 type Props = {
   dispatch: Dispatch<Action>

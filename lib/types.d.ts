@@ -20,7 +20,7 @@ export type State = {
   soundPack: SoundPack
   activePanel: ActivePanel
   soundEnabled: boolean
-  data: string[]
+  data: TypingData
   dataName: string
   typingStarted: boolean
   totalTimeTaken: number
@@ -50,6 +50,8 @@ export type QuoteData = {
   text: string
   source: string
 }
+
+export type TypingData = string[] | QuoteData[]
 
 /**
  * Only supported on Chrome and Android Webview.

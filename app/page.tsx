@@ -13,6 +13,7 @@ import { useLocalStorage } from '../lib/localStorage'
 import { ClientOnly } from '../components/ClientOnly'
 import { RotateCcw } from 'lucide-react'
 import { motion, useAnimate } from 'motion/react'
+import { isRtlDataName } from '../lib/data'
 
 export default function Home() {
   const [state, dispatch] = useAppState()
@@ -22,6 +23,7 @@ export default function Home() {
     state.words.length === 0
       ? ''
       : state.words[state.progress.wordIndex][state.progress.charIndex]
+  const isRtl = isRtlDataName(state.dataName)
 
   // ignore typing when dynamic island is expanded
   const ignoreTyping = state.activePanel !== null
@@ -88,6 +90,7 @@ export default function Home() {
           progress={state.progress}
           errorLocations={state.errorLocations}
           shuffleKey={state.shuffleKey}
+          isRtl={isRtl}
           onTap={handleWordsTap}
         />
       </div>
