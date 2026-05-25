@@ -10,6 +10,7 @@ import type { SoundPack } from './sounds'
 import type { State, Action, QuoteData } from './types'
 import { getRandomWords, createEmptyKeyStatRecord } from './utils'
 import { isQuoteDataName } from './data'
+import { charsMatch } from './text'
 
 const initWords = 500
 

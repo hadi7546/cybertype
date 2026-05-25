@@ -81,3 +81,14 @@ test('remaining keys are ignored', () => {
     expect(shouldIgnore(ch)).toBe(true)
   })
 })
+
+test('Persian and other non-Latin typed characters are not ignored', () => {
+  ;['س', 'ا', 'ل', 'ی', 'ک', 'آ', 'ء'].forEach(ch => {
+    expect(shouldIgnore(ch)).toBe(false)
+  })
+})
+
+test('multi-character strings are ignored', () => {
+  expect(shouldIgnore('Enter')).toBe(true)
+  expect(shouldIgnore('سال')).toBe(true)
+})

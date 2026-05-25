@@ -61,6 +61,21 @@ const keysToUse = new Set([
   ...others
 ])
 
+/** True when `key` is a single user-typed character (e.g. Persian letters from IME). */
+function isTypedCharacter(key: string) {
+  if (key.length === 0) return false
+  // Surrogate pairs: one code point, two UTF-16 units (emoji, rare scripts).
+  if (key.length === 2) {
+    const code = key.charCodeAt(0)
+    if (code >= 0xd800 && code <= 0xdbff) return true
+  }
+  if (key.length !== 1) return false
+  // Reject ASCII control characters; allow all other single code units.
+  const code = key.charCodeAt(0)
+  return code > 0x1f && code !== 0x7f
+}
+
 export function shouldIgnore(key: string) {
-  return !keysToUse.has(key)
+  if (keysToUse.has(key)) return false
+  return !isTypedCharacter(key)
 }

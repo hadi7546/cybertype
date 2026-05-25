@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { shouldIgnore } from '../lib/keys'
+import { charsMatch } from '../lib/text'
 import { getSounds, SoundPack, Sounds } from '../lib/sounds'
 import { Action } from '../lib/types'
 
